@@ -1,0 +1,40 @@
+header {
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid black;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.logo img {
+    width: 135px;
+    margin: 0;
+    margin-left: 20px;
+    border-radius: 8px;
+  }
+
+  .navigation ul {
+    display: flex;
+    list-style-type: none;
+    margin-right: 25px;
+  }
+
+  .navigation ul li a {
+    text-decoration: none;
+    color: black;
+    margin-right: 30px;
+    font-size: 22px;
+    font-weight: 600;
+    font-family: roboto;
+  }
+
+  .navigation ul li a:hover {
+    color: #d2601a;
+  }
