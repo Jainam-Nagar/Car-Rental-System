@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Cars</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            padding: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .car-listings,
+        .add-car-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            flex-basis: 48%;
+        }
+
+        .car-listings h2,
+        .add-car-form h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .car-listings ul {
+            padding: 0;
+        }
+
+        .car-listings ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .car-listings ul li img {
+            max-width: 100px;
+            margin-right: 20px;
+        }
+
+        .car-listings ul li button {
+            background-color: #eb5c03;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .car-listings ul li button.inactive {
+            background-color: #ccc;
+            cursor: not-allowed;
+            position: relative;
+        }
+
+        .car-listings ul li button.inactive:hover::after {
+            content: 'Reject each booking request to delete car';
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            z-index: 1;
+            font-size: 14px;
+            color: #333;
+            width: max-content;
+            text-align: center;
+        }
+
+        .add-car-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .add-car-form input[type="text"],
+        .add-car-form input[type="number"],
+        .add-car-form input[type="file"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .add-car-form input[type="submit"] {
+            background-color: #eb5c03;
+            color: #fff;
+            border: none;
+            margin-top: 7px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/manage_cars" id="current-page">Manage Cars</a></li>
+                <li><a href="/manage_bookings">Manage Bookings</a></li>
+                <li><a href="/support">Support</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="car-listings">
+            <h2>Current Car Listings</h2>
+            {% if cars %}
+            <ul>
+                {% for car in cars %}
+                <li>
+                    <img src="{{ car[5] }}" alt="Cover Image">
+                    <div>
+                        <p>{{ car[1] }} {{ car[2] }} - Year: {{ car[3] }} | Daily Rate: ${{ car[4] }}</p>
+                        <form action="/delete_car/{{ car[0] }}" method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            {% if car[6] == 'Unavailable' %}
+                            <button type="submit" class="inactive" disabled>Delete</button>
+                            {% else %}
+                            <button type="submit">Delete</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No cars are currently listed. Please add a car using the form below.</p>
+            {% endif %}
+        </div>
+        <div class="add-car-form">
+            <h2>Add/Edit Car</h2>
+            <form action="/add_car" method="post" enctype="multipart/form-data">
+                <label for="car_make">Car Make:</label>
+                <input type="text" id="car_make" name="car_make" required>
+                <label for="car_model">Car Model:</label>
+                <input type="text" id="car_model" name="car_model" required>
+                <label for="car_year">Year:</label>
+                <input type="number" id="car_year" name="car_year" required>
+                <label for="daily_rate">Daily Rate:</label>
+                <input type="number" id="daily_rate" name="daily_rate" step="0.01" required>
+                <label for="cover_image">Cover Image:</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/*" required>
+                <label for="additional_images">Additional Images:</label>
+                <input type="file" id="additional_images" name="additional_images" accept="image/*" multiple>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="submit" value="Add Car">
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 crs.com</p>
+    </footer>
+</body>
+
+</html>

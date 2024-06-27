@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .support-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .support-section h2 {
+            margin-bottom: 10px;
+        }
+
+        .support-section p {
+            margin-bottom: 20px;
+        }
+
+        .contact-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .contact-form textarea {
+            height: 150px;
+        }
+
+        .contact-form input[type="submit"] {
+            background-color: #eb5c03;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Add more styles as needed */
+    </style>
+</head>
+<body>
+    {% if is_admin %}
+    <header>
+        <!-- Admin navigation bar -->
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/manage_cars">Manage Cars</a></li>
+                <li><a href="/manage_bookings">Manage Bookings</a></li>
+                <li><a href="/support" id="current-page">Support</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    {% elif is_client %}
+    <header>
+        <!-- Client navigation bar -->
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="{{ url_for('client_dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('browse_cars') }}">Browse Cars</a></li>
+                <li><a href="{{ url_for('my_bookings') }}">My Bookings</a></li>
+                <li><a href="{{ url_for('support') }}" id="current-page">Support</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    {% else %}
+    <header>
+        <!-- Default navigation bar for users not logged in -->
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
+        </div>
+        <nav class="navigation">
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/rent_cars">Rent Cars</a></li>
+              <li><a href="/support" id="current-page">Support</a></li>
+              <li><a href="/client_login">Client Login</a></li>
+              <li><a href="/admin_login">Admin Login</a></li>
+            </ul>
+          </nav>
+    </header>
+    {% endif %}
+    <main>
+        <h1>Support</h1>
+        <div class="support-section">
+            <h2>Frequently Asked Questions</h2>
+            <p>Here are some common questions and answers:</p>
+            <ul>
+                <li><strong>Question 1:</strong> Answer 1</li>
+                <li><strong>Question 2:</strong> Answer 2</li>
+                <!-- Add more FAQ items -->
+            </ul>
+        </div>
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form action="/submit_contact" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 crs.com</p>
+    </footer>
+</body>
+</html>

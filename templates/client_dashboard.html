@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #f0f0f0;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            padding: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .summary,
+        .charts {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            flex-basis: 48%;
+        }
+
+        .summary h2,
+        .charts h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="{{ url_for('client_dashboard') }}" id="current-page">Dashboard</a></li>
+                <li><a href="{{ url_for('browse_cars') }}">Browse Cars</a></li>
+                <li><a href="{{ url_for('my_bookings') }}">My Bookings</a></li>
+                <li><a href="{{ url_for('support') }}">Support</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="summary">
+            <h2>Summary</h2>
+            <p>Total bookings made: {{ total_bookings }}</p>
+            <p>Total spending: ${{ total_spending }}</p>
+            <!-- Add more client-specific summary data here -->
+        </div>
+        <div class="charts">
+            <h2>Charts</h2>
+            <!-- Example chart using Chart.js -->
+            <canvas id="clientChart" width="400" height="250"></canvas>
+            <script>
+                // Get data from Flask template
+                var totalBookings = {{ total_bookings }};
+                var totalSpending = {{ total_spending }};
+                var data = {
+                    labels: ["Total Bookings", "Total Spending"],
+                    datasets: [{
+                        label: 'Dataset',
+                        data: [totalBookings, totalSpending],
+                        backgroundColor: [
+                            'rgba(29, 60, 69, 0.8)', // Dark blue color with transparency
+                            'rgba(235, 92, 3, 0.8)' // Orange color with transparency
+                        ],
+                        borderColor: [
+                            '#0d213a', // Darker shade of blue
+                            '#d15a10' // Darker shade of orange
+                        ],
+                        borderWidth: 1,
+                        barThickness: 90 // Adjust bar thickness
+                    }]
+                };
+
+                // Create chart
+                var ctx = document.getElementById('clientChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false // Remove grid lines
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false // Hide legend
+                            }
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 crs.com</p>
+    </footer>
+</body>
+
+</html>
