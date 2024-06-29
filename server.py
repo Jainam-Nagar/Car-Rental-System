@@ -3,10 +3,6 @@ from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import sqlite3, datetime, os
-import logging
-
-# Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__, static_folder='static')
 app.config.update(
@@ -436,7 +432,6 @@ def rent_car():
     conn.commit()
     conn.close()
 
-    # return jsonify({'success': True, 'rented_car_id': car_id})
     return jsonify({'success': True})
 
 @app.route('/my_bookings')
